@@ -14,6 +14,18 @@ exports.output = {
   libraryTarget: 'umd',
 }
 
+exports.module = {
+  rules: [
+    { // Babel
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      use: { loader: 'babel-loader', }
+    },
+  ]
+}
+
+exports.devtool = 'inline-source-map'
+
 exports.devServer = {
   port: 8080,
   open: true,
