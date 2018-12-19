@@ -21,6 +21,26 @@ exports.module = {
       exclude: /(node_modules|bower_components)/,
       use: { loader: 'babel-loader', }
     },
+    { // Sass
+      test: /\.s[ac]ss$/,
+      exclude: /(node_modules|bower_components)/,
+      use: [
+        { loader: 'style-loader',
+          options: {
+          },
+        },
+        { loader: 'css-loader',
+          options: {
+            sourceMap: true,
+          },
+        },
+        { loader: 'sass-loader',
+          options: {
+            sourceMap: true,
+          },
+        },
+      ],
+    },
   ]
 }
 
