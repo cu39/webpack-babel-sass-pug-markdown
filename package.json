@@ -4,6 +4,10 @@
   "main": "index.js",
   "author": "cu39 <cu393uc@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
   "devDependencies": {
     "webpack": "^4.28.0",
     "webpack-cli": "^3.1.2",
