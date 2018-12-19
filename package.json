@@ -1,0 +1,7 @@
+{
+  "name": "webpack-babel-sass-pug",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "cu39 <cu393uc@gmail.com>",
+  "license": "MIT"
+}
