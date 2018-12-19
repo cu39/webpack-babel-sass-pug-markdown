@@ -2,7 +2,15 @@ const path = require('path')
 
 exports.mode = 'development'
 
+exports.entry = {
+  app: './src/index.js'
+}
+
 exports.output = {
+  path: path.resolve(__dirname, 'dist'),
+  publicPath: '/js/',
+  filename: '[name].js',
+  library: ['com', 'example'],
   libraryTarget: 'umd',
 }
 

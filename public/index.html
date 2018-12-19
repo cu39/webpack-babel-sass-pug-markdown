@@ -7,9 +7,9 @@
   <body>
     <h1>Webpack Example</h1>
     <p id='output'>Output Area</p>
-    <script src='main.js'></script>
+    <script src='/js/app.js'></script>
     <script>
-      const hello = new Hello('John')
+      const hello = new com.example.Hello('John')
       const msg = hello.greet()
       console.log(msg)
       document.querySelector('#output').innerText = msg
