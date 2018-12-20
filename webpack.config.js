@@ -2,6 +2,13 @@ const path = require('path')
 const globule = require('globule')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+exports.resolveLoader = {
+  modules: [
+    'node_modules',
+    path.resolve(__dirname, 'loaders')
+  ]
+}
+
 exports.mode = 'development'
 
 exports.entry = {
@@ -62,6 +69,26 @@ exports.module = {
         },
       ],
     },
+    { // Markdown
+      test: /\.md$/,
+      exclude: /(node_modules|bower_components)/,
+      use: [
+        { loader: 'apply-loader' },
+        {
+          loader: 'pug-loader',
+          options: {
+            pretty: true,
+          },
+        },
+        {
+          loader: 'markdown-to-pug-loader',
+          options: {
+            // linkify: false,
+            // typographer: false,
+          }
+        },
+      ],
+    },
   ]
 }
 
@@ -77,7 +104,9 @@ exports.devServer = {
 
 function pluginConfig() {
   const pugDir  = path.resolve(__dirname, 'src', 'pug')
+  const mdDir   = path.resolve(__dirname, 'src', 'md')
   const destDir = path.resolve(__dirname, 'dist')
+  const blogDir = path.join(destDir, 'blog')
 
   const mapCallback = o => new HtmlWebpackPlugin({
     template: o['src'][0],
@@ -95,5 +124,13 @@ function pluginConfig() {
       && found.indexOf(path.join(pugDir, 'layout')) < 0,
   }).map(mapCallback)
 
-  return pages
+  const blogs = globule.findMapping({
+    src: path.join('**', '*.md'),
+    srcBase: mdDir,
+    destBase: blogDir,
+    ext: '.html',
+    extDot: 'last',
+  }).map(mapCallback)
+
+  return pages.concat(blogs)
 }

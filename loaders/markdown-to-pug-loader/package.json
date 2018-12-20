@@ -1,0 +1,8 @@
+{
+  "name": "markdown-to-pug-loader",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "cu39",
+  "license": "MIT",
+  "private": true
+}
