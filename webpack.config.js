@@ -1,4 +1,6 @@
 const path = require('path')
+const globule = require('globule')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 exports.mode = 'development'
 
@@ -8,7 +10,7 @@ exports.entry = {
 
 exports.output = {
   path: path.resolve(__dirname, 'dist'),
-  publicPath: '/js/',
+  publicPath: '/',
   filename: '[name].js',
   library: ['com', 'example'],
   libraryTarget: 'umd',
@@ -47,15 +49,51 @@ exports.module = {
         },
       ],
     },
+    { // Pug
+      test: /\.pug$/,
+      exclude: /(node_modules|bower_components)/,
+      use: [
+        { loader: 'apply-loader' },
+        {
+          loader: 'pug-loader',
+          options: {
+            pretty: true,
+          },
+        },
+      ],
+    },
   ]
 }
+
+exports.plugins = pluginConfig()
 
 exports.devtool = 'inline-source-map'
 
 exports.devServer = {
   port: 8080,
   open: true,
-  // openPage: 'index.html',
-  contentBase: path.resolve(__dirname, 'public'),
-  watchContentBase: true,
+  openPage: '',
+}
+
+function pluginConfig() {
+  const pugDir  = path.resolve(__dirname, 'src', 'pug')
+  const destDir = path.resolve(__dirname, 'dist')
+
+  const mapCallback = o => new HtmlWebpackPlugin({
+    template: o['src'][0],
+    filename: o['dest'],
+  })
+
+  const pages = globule.findMapping({
+    src: path.join('**', '*.pug'),
+    srcBase: pugDir,
+    destBase: destDir,
+    ext: '.html',
+    extDot: 'last',
+    filter: found =>
+      !(/_[^\/]+\.pug$/.test(found))
+      && found.indexOf(path.join(pugDir, 'layout')) < 0,
+  }).map(mapCallback)
+
+  return pages
 }
